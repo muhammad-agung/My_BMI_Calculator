@@ -45,70 +45,80 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Integer strWeight = Integer.parseInt(etWeight.getText().toString());
-                Integer strHeight = Integer.parseInt(etHeight.getText().toString());
-                String DateNow = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault()).format(new Date());
-                float multiply = strHeight*strHeight;
-                float calculation = (strWeight / multiply)*10000;
-                String simplifiedcalc = String.format("%.2f",calculation);
+
 
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
 
                 SharedPreferences.Editor prefEdit = prefs.edit();
-                
-                if(calculation < 18.5){
-                    prefEdit.putString("Date", DateNow);
-                    prefEdit.putFloat("calculation", calculation);
-                    prefEdit.putString("Info", "You are underweight");
 
-
-                    currDate.setText("Last Calculated Date: "+ DateNow);
-                    calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
-                    infomation.setText("You are underweight");
-
-
+                if(etWeight.getText().toString().matches("") || etHeight.getText().toString().matches("")){
+                    Toast.makeText(MainActivity.this,"Inputs items cannot be empty!",Toast.LENGTH_LONG).show();
                 }
-                else if(calculation < 24.9){
-                    prefEdit.putString("Date", DateNow);
-                    prefEdit.putFloat("calculation", calculation);
-                    prefEdit.putString("Info", "Your BMI is normal");
-                    prefEdit.commit();
+                else{
+
+                    Integer strWeight = Integer.parseInt(etWeight.getText().toString());
+                    Integer strHeight = Integer.parseInt(etHeight.getText().toString());
+                    String DateNow = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault()).format(new Date());
+                    float multiply = strHeight*strHeight;
+                    float calculation = (strWeight / multiply)*10000;
+                    String simplifiedcalc = String.format("%.2f",calculation);
+
+                    if(calculation < 18.5){
+                        prefEdit.putString("Date", DateNow);
+                        prefEdit.putFloat("calculation", calculation);
+                        prefEdit.putString("Info", "You are underweight");
 
 
-                    currDate.setText("Last Calculated Date: "+ DateNow);
-                    calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
-                    infomation.setText("Your BMI is normal");
+                        currDate.setText("Last Calculated Date: "+ DateNow);
+                        calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
+                        infomation.setText("You are underweight");
 
-                    prefEdit.commit();
+
+                    }
+                    else if(calculation < 24.9){
+                        prefEdit.putString("Date", DateNow);
+                        prefEdit.putFloat("calculation", calculation);
+                        prefEdit.putString("Info", "Your BMI is normal");
+                        prefEdit.commit();
+
+
+                        currDate.setText("Last Calculated Date: "+ DateNow);
+                        calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
+                        infomation.setText("Your BMI is normal");
+
+                        prefEdit.commit();
+                    }
+                    else if(calculation > 25 && calculation < 30) {
+                        prefEdit.putString("Date", DateNow);
+                        prefEdit.putFloat("calculation", calculation);
+                        prefEdit.putString("Info", "You are overweight");
+
+
+
+                        currDate.setText("Last Calculated Date: " + DateNow);
+                        calcBMI.setText("Last Calculated BMI: " + simplifiedcalc);
+                        infomation.setText("You are overweight");
+
+                        prefEdit.commit();
+                    }
+                    else if(calculation >= 30){
+                        prefEdit.putString("Date", DateNow);
+                        prefEdit.putFloat("calculation", calculation);
+                        prefEdit.putString("Info", "You are obese");
+
+
+
+                        currDate.setText("Last Calculated Date: "+ DateNow);
+                        calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
+                        infomation.setText("You are obese");
+
+                        prefEdit.commit();
+                    }
                 }
-                else if(calculation > 25 && calculation < 30) {
-                    prefEdit.putString("Date", DateNow);
-                    prefEdit.putFloat("calculation", calculation);
-                    prefEdit.putString("Info", "You are overweight");
 
 
-
-                    currDate.setText("Last Calculated Date: " + DateNow);
-                    calcBMI.setText("Last Calculated BMI: " + simplifiedcalc);
-                    infomation.setText("You are overweight");
-
-                    prefEdit.commit();
-                }
-                else if(calculation >= 30){
-                prefEdit.putString("Date", DateNow);
-                prefEdit.putFloat("calculation", calculation);
-                prefEdit.putString("Info", "You are obese");
-
-
-
-                currDate.setText("Last Calculated Date: "+ DateNow);
-                calcBMI.setText("Last Calculated BMI: " +simplifiedcalc);
-                infomation.setText("You are obese");
-
-                    prefEdit.commit();
-                }
 
             }
         });
